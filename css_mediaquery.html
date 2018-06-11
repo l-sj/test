@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0">
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>test</title>
+<style>
+html, body, div {margin: 0; padding: 0;}
+body {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.test-box {
+  font-size: 1rem;
+  width: 15rem;
+  height: 1rem;
+}
+.mediaquery:after {
+  display: inline-block;
+}
+
+/* IE에서 지원 안됨. win10 Microsoft edge에서는 지원함 */
+@media screen and (-webkit-min-device-pixel-ratio: 1){
+  .ratio-1 {
+    background: gold;
+  }
+  .ratio-1:after {
+    content: '1';
+  }
+}
+@media screen and (-webkit-min-device-pixel-ratio: 2){
+  .ratio-2 {
+    background: gold;
+  }
+  .ratio-2:after {
+    content: '2';
+  }
+}
+@media screen and (-webkit-min-device-pixel-ratio: 3){
+  .ratio-3 {
+    background: gold;
+  }
+  .ratio-3:after {
+    content: '3';
+  }
+}
+@media screen and (-webkit-min-device-pixel-ratio: 4){
+  .ratio-4 {
+    background: gold;
+  }
+  .ratio-4:after {
+    content: '4';
+  }
+}
+/* win7 IE9 ~ (win10)IE11 에서도 지원함 */
+@media screen and (min-resolution: 96dpi){
+  .ratio-1 {border: 1px solid red}
+}
+@media screen and (min-resolution: 192dpi){
+  .ratio-2 {border: 1px solid red}
+}
+@media screen and (min-resolution: 288dpi){
+  .ratio-3 {border: 1px solid red}
+}
+@media screen and (min-resolution: 384dpi){
+  .ratio-4 {border: 1px solid red}
+}
+
+/* 
+Microsoft Edge는 Windows10 및 Windows10 Mobile을 위한 기본 브라우저 환경입니다. 
+그러나 ActiveX 컨트롤이 필요한 웹앱을 실행하는 경우 Internet Explorer 11을 계속 사용하는 것이 좋습니다. 
+
+_____
+
+
+Apple 72 dpi를 채택한 이유는 타자기 세대에서 널리 쓰이던 10 point 크기의 서체를 컴퓨터 스크린에서도 같은 숫자의 크기인 10 px의 크기를 갖게 하겠다는 의도.
+Microsoft의 운영체제에서는 위의 96 dpi를 논리적인 해상도logical resolution라 부르고, 실제 디스플레이가 지원하고 실질적으로 표현되는 72 dpi의 해상도를 실제 해상도physical resolution이라 말합니다.
+
+Microsoft는 96 dpi를 표준 해상도로 채택.
+ppipixels-per-inch와 dpidots-per-inch는 서로 다른 개념이지만 최근에는 차이의 구분 없이 혼용되어 쓰이고 있습니다.
+
+"
+1 inch를 표시하기 위해 Mac에서는 72px이 필요하고, Windows에서는 96 px이 필요한 셈입니다. 결국 1 pt가 정의하는 픽셀은 해상도의 상황에 따라 달라지게 됩니다.
+
+Mac: 1 inch = 72 px 
+Windows: 1 inch = 96px 
+
+Mac (72 ppi): 1 pt = 1 px = 약 0.3527 mm 
+Windows (96 ppi): 1 pt = 1 px * 96/72 = 약 1.3333 px = 약 0.4702 mm
+"
+
+
+하지만 웹 브라우져 상에서의 해상도는 약간 예외적임.
+Microsoft의 Internet Explorer는 역시 자사제품답게 96 dpi의 해상도를 가지고 있습니다. 
+Google Chrome이나 Apple의 Safari가 쓰는 Webkit 엔진의 경우도 72 dpi가 아닌 96 dpi의 해상도를 기준으로 삼고 있습니다. 
+이는 CSS가 계획될 당시 96 dpi를 기준으로 만들어졌기 때문입니다. 
+그러므로 웹에서의 폰트는 포인트에서 4/3배가 된 픽셀 값을 가지게 됩니다. 
+12 pt의 크기의 글씨는 웹 브라우져에서 16 px로 렌더링 되는 것입니다.
+
+https://spoqa.github.io/2012/07/06/pixel-and-point.html
+ */
+</style>
+<script>
+  //	Scott Jehl's viewport size function: https://gist.github.com/2051999
+  function viewportSize(){
+    var test = document.createElement( "div" );
+
+    test.style.cssText = "position: fixed;top: 0;left: 0;bottom: 0;right: 0;";
+    document.documentElement.insertBefore( test, document.documentElement.firstChild );
+
+    var dims = { width: test.offsetWidth, height: test.offsetHeight };
+    document.documentElement.removeChild( test );
+
+    return dims;
+  }
+  function loaded() {
+    setTimeout(function(){
+      var devicePixelRatio = window.devicePixelRatio; // IE11 부터 지원
+      document.getElementById('dpr').innerHTML = window.devicePixelRatio;
+      document.getElementById('wid').innerHTML = viewportSize().width;
+    }, 1000)
+  }
+</script>
+</head>
+<body onload="loaded();">
+  <div id="test-box" class="test-box">box</div>
+  <div class="mediaquery ratio-1">1 mediaquery ratio: </div>
+  <div class="mediaquery ratio-2">2 mediaquery ratio: </div>
+  <div class="mediaquery ratio-3">3 mediaquery ratio: </div>
+  <div class="mediaquery ratio-4">4 mediaquery ratio: </div>
+  <hr>
+  <p>Width = <span id="wid"></span>px</p>
+  <p>Pixel ratio = <span id="dpr"></span></p>
+</body>
+</html>
